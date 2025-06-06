@@ -47,8 +47,8 @@ public class GUI {
         ((JMenuItem) sByOption.add(new JMenuItem("Search by ID"))).addActionListener(e -> searchModalPopup(frame, "id"));
         ((JMenuItem) sByOption.add(new JMenuItem("Search by name"))).addActionListener(e -> searchModalPopup(frame, "name"));
         ((JMenuItem) sByOption.add(new JMenuItem("Search by surnames"))).addActionListener(e -> searchModalPopup(frame, "surnames"));
-        //Afegeix la cerca per teléfon
-        //Afegeix la cerca per email
+        ((JMenuItem) sByOption.add(new JMenuItem("Search by phone"))).addActionListener(e -> searchModalPopup(frame, "phone"));
+        ((JMenuItem) sByOption.add(new JMenuItem("Search by email"))).addActionListener(e -> searchModalPopup(frame, "email"));
     }
 
     private void searchModalPopup(JFrame frame, String field){
@@ -93,7 +93,7 @@ public class GUI {
     }
 
     private void createContact(){
-        addRow(this.ctrl.newContact("", "", "", ""));
+        addRow(this.ctrl.nouContacte("", "", "", ""));
     }
 
     private void updateContact(){
@@ -106,7 +106,7 @@ public class GUI {
         String telefon = (String) t.getValueAt(r, 3);
         String email = (String) t.getValueAt(r, 4);
 
-        this.ctrl.updateContact(id, name, surnames, telefon, email);
+        this.ctrl.actualitzarContacte(id, name, surnames, telefon, email);
     }
 
     private void deleteContact(){
@@ -115,7 +115,7 @@ public class GUI {
         else{
             for(int i : sr){
                 int id = (int) this.table.getModel().getValueAt(i, 0);
-                this.ctrl.deleteContact(id);
+                this.ctrl.esborrarContacte(id);
             }
             removeRows(sr);
         }
@@ -124,20 +124,20 @@ public class GUI {
     private void searchAll(){
         this.model.setRowCount(0);
 
-        List<Contact> cs = this.ctrl.getContacts();
+        List<Contact> cs = this.ctrl.getContactes();
         cs.forEach(this::addRow);
     }
 
     private void searchContactByField(String field, String value){
         this.model.setRowCount(0);
 
-        if(field.equals("id")) addRow(this.ctrl.searchContactByID(Integer.parseInt(value)));
+        if(field.equals("id")) addRow(this.ctrl.cercarContactePerID(Integer.parseInt(value)));
         else {
             List<Contact> cs = switch (field) {
-                case "name" -> this.ctrl.searchContactByName(value);
-                case "surnames" -> this.ctrl.searchContactBySurnames(value);
-                //Afegeix la cerca per teléfon
-                //Afegeix la cerca per email
+                case "name" -> this.ctrl.cercarContactesPerNom(value);
+                case "surnames" -> this.ctrl.cercarContactesPerCognoms(value);
+                case "phone" -> this.ctrl.cercarContactesPerTelefon(value);
+                case "email" -> this.ctrl.cercarContactesPerEmail(value);
                 default -> null;
             };
 

@@ -43,14 +43,16 @@ public class DataBaseController implements AutoCloseable  {
     public Contact actualitzarContacte(int ID, String name, String surnames, String phone, String email) {
         Contact c = session.get(Contact.class, ID);
         if(c != null){
-            c =
+            c.setName(name);
+            c.setSurnames(surnames);
+            c.setPhone(phone);
+            c.setEmail(email);
+
             Transaction transaction = this.session.beginTransaction();
             this.session.persist(c);
             transaction.commit();
         }
-
-        }
-
+        return c;
     }
 
     public void esborrarContacte(int ID){
@@ -67,23 +69,19 @@ public class DataBaseController implements AutoCloseable  {
     }
 
     public List<Contact> cercarContactesPerNom(String name){
-       //TODO: implementation pending... 
-       return null;
+       return cercarContactesPerCamp("name", name);
     }
 
     public List<Contact> cercarContactesPerCognoms(String surnames){
-       //TODO: implementation pending... 
-       return null;
+       return cercarContactesPerCamp("surnames", surnames);
     }
 
     public List<Contact> cercarContactesPerTelefon(String phone){
-       //TODO: implementation pending... 
-       return null;
+       return cercarContactesPerCamp("phone", phone);
     }
 
     public List<Contact> cercarContactesPerEmail(String email){
-       //TODO: implementation pending... 
-       return null;
+       return cercarContactesPerCamp("email", email);
     }
 
     public List<Contact> getContactes() {
